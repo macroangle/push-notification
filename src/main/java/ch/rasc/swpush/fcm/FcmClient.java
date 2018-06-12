@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -30,7 +31,8 @@ public class FcmClient {
     Path p = Paths.get(settings.getServiceAccountFile());
     try (InputStream serviceAccount = Files.newInputStream(p)) {
       FirebaseOptions options = new FirebaseOptions.Builder()
-          .setCredentials(GoogleCredentials.fromStream(serviceAccount)).build();
+          .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+          .setDatabaseUrl("https://push-notification-7fbaf.firebaseio.com").build();
 
       FirebaseApp.initializeApp(options);
     }
@@ -59,6 +61,13 @@ public class FcmClient {
           .subscribeToTopicAsync(Collections.singletonList(clientToken), topic).get();
       System.out
           .println(response.getSuccessCount() + " tokens were subscribed successfully");
+      System.out
+          .println(response.getFailureCount() + " tokens were not-subscribed successfully");
+      if(CollectionUtils.isEmpty(response.getErrors())) {
+          for (com.google.firebase.messaging.TopicManagementResponse.Error error : response.getErrors()) {
+            System.out.println("Error: " + error.getReason());
+        }
+      }
     }
     catch (InterruptedException | ExecutionException e) {
       Application.logger.error("subscribe", e);
