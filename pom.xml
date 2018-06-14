@@ -10,6 +10,13 @@
 
 	<name>swpush</name>
 	<description>Service Worker Push messages demo</description>
+    
+    <repositories>
+        <repository>
+          <id>mvnrepository</id>
+          <url>http://central.maven.org/maven2/</url>
+        </repository>
+     </repositories>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -101,7 +108,21 @@
 			<artifactId>jsr305</artifactId>
 			<version>3.0.2</version>
 			<scope>provided</scope>
-		</dependency>		
+		</dependency>
+        
+        <!--JMS support-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-jms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-broker</artifactId>
+        </dependency>
 	</dependencies>
 
 	<build>
