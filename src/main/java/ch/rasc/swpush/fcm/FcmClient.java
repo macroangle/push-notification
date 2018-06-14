@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -53,6 +54,24 @@ public class FcmClient {
 
     String response = FirebaseMessaging.getInstance().sendAsync(message).get();
     System.out.println("Sent message: " + response);
+  }
+  
+  public void send(String topic, String fromUser, String title, String body) throws InterruptedException, ExecutionException {
+      Map<String, String> data = new HashMap<>();
+      data.put("fromUser", fromUser);
+      data.put("title", title);
+      data.put("body", body);
+      data.put("ts", String.valueOf(System.currentTimeMillis()));
+      data.put("id", String.valueOf(System.currentTimeMillis()));
+      
+      Message message = Message.builder().putAllData(data).setTopic(topic)
+              .setWebpushConfig(WebpushConfig.builder().putHeader("ttl", "300")
+              .setNotification(new WebpushNotification(fromUser, title, "mail2.png"))
+              .build())
+          .build();
+
+      String response = FirebaseMessaging.getInstance().sendAsync(message).get();
+      System.out.println("Sent message: " + response);
   }
 
   public void subscribe(String topic, String clientToken) {

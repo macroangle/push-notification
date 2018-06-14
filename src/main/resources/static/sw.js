@@ -57,7 +57,7 @@ messaging.setBackgroundMessageHandler(function(payload) {
 });
 
 
-const CACHE_NAME = 'my-site-cache-v1';
+const CACHE_NAME = 'my-site-cache-v2';
 const urlsToCache = [
 	'/index.html',
 	'/index.js',

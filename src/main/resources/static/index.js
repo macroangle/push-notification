@@ -47,7 +47,7 @@ function showJokes(jokes) {
   const html = [];
   jokes.forEach(j => {
     const date = new Date(parseInt(j.ts));
-    html.push(`<div><div class="header">${date.toISOString()} ${j.id} (${j.seq})</div><div class="joke">${j.joke}</div></div>`);
+    html.push(`<tr><td class="header">${date.toISOString()}</td><td class="joke">${j.fromUser}</td><td>${j.title}</td><td>${j.body}</td></tr>`);
   });
   table.innerHTML = html.join('');
 }

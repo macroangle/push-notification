@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8 />
+  <title>Web Push</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+     body {
+        font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, Helvetica, Arial, sans-serif;
+     }
+     .header {
+        font-family: monospace;
+        font-size: 1.1em;
+     }
+     .joke {
+        margin-bottom: 10px;
+     }
+  </style>
+    
+</head>
+<script type="text/javascript">
+function formSubmit() {
+    var fromUser = document.forms["notificationForm"]["fromUser"].value;
+    var title = document.forms["notificationForm"]["title"].value;
+    var body = document.forms["notificationForm"]["body"].value;
+    
+    fetch('/sendNotification', { method: 'post', headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({fromUser:fromUser, title:title, body:body}) });
+    return false;
+}
+</script>
+<body>
+<div id="outTable">
+</div>
+<div id="notificationForm">
+    <form name="notificationForm" action="/sendNotification" method="post" onsubmit="return formSubmit()">
+        <table>
+            <tr><td>From User:</td><td><input type="text" name="fromUser"></td></tr>
+            <tr><td>Title:</td><td><input type="text" name="title"></td></tr>
+            <tr><td>Body:</td><td><input type="text" name="body"></td></tr>
+            <tr><td colspan="2"><input type="submit" value="Submit"></td></tr>
+        </table>
+    </form>
+</div>
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-messaging.js"></script>
+<script src="notification.js"></script>
+</body>
+</html>
